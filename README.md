@@ -5,6 +5,7 @@ RaspberryPiを使ったスマートホームアプリケーションです。結
 * getPicture.sh/getPicture.py: RaspberriPiに繋いでいるWebカメラで写真を撮ります。
 * interphone.py: インターフォンが鳴ったらLINEに通知されます。
 * trainDelay.py: 電車の遅延情報がLINEで通知されます。
+* weather.py: 天気情報をLINEで通知していましたが、[livedoor天気](https://help.livedoor.com/weather/index.html)のサービス終了に伴い、利用できなくなっています。
 
 ## Requirement
 * RaspberryPi2 Model B
