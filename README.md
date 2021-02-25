@@ -5,7 +5,7 @@ RaspberryPiを使ったスマートホームアプリケーションです。結
 * getPicture.sh/getPicture.py: RaspberriPiに繋いでいるWebカメラで写真を撮ります。
 * interphone.py: インターフォンが鳴ったらLINEに通知されます。
 * trainDelay.py: 電車の遅延情報がLINEで通知されます。
-* weather.py: 天気情報をLINEで通知していましたが、[livedoor天気](https://help.livedoor.com/weather/index.html)のサービス終了に伴い、利用できなくなっています。
+* weather.py: ~~天気情報をLINEで通知していましたが、[livedoor天気](https://help.livedoor.com/weather/index.html)のサービス終了に伴い、利用できなくなっています。~~ 翌日の天気を取得して、LINEに通知されます（気象庁のAPIが利用できるようになったので、そちらに対応しています）。デフォルトでは埼玉県南部の設定になっています。
 
 ## Requirement
 * RaspberryPi2 Model B
@@ -30,6 +30,13 @@ log_dir = os.path.expanduser('~') + '/python/log'
 <pre>
 # 路線名を記載
 TRAIN_ROUTE = ''
+</pre>
+
+以下のURLのXXに各自の都道府県コードを入力してください。また、AREA_MODEについては対象地域に合わせて、適宜修正してください。DATE_MODE=1は翌日を意味しています。
+<pre>
+WEATHER_URL = 'https://www.jma.go.jp/bosai/forecast/data/forecast/XX0000.json'
+DATE_MODE = 1
+AREA_MODE = 1
 </pre>
 
 #### linefunc.py
@@ -74,9 +81,12 @@ GSTOP = 30  # 通過域端最小損失
 </pre>
 
 ### Run
-#### getPicture.py/getTrainDelay.py
+#### getPicture.py/getTrainDelay.py/weather.py
 cronに設定しておくことで、定期的に結果をLINEに通知します。
 <pre>
+# Weather
+10 21 * * * python3 $HOME/python/weather.py
+
 # getPicture
 0 */1 * * * $HOME/python/getPicture.sh
 
