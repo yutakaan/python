@@ -10,6 +10,7 @@ import logging
 import logging.config
 from subfunc import linefunc
 from subfunc import logfunc
+from subfunc import token
 
 # interphone setting
 CHUNK = 2048
@@ -24,7 +25,7 @@ detect_high = False
 detect_low = False
 # Lineのアクセスコード
 URL = linefunc.URL
-ACCESS_TOKEN = linefunc.ACCESS_TOKEN
+ACCESS_TOKEN = token.ACCESS_TOKEN
 HEADERS = linefunc.HEADERS
 LINE_MESSAGE = 'インターフォンが鳴ったよ'
 # フィルタ係数

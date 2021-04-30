@@ -4,6 +4,8 @@ import sys
 from subfunc import logfunc
 from subfunc import jsonfunc
 from subfunc import linefunc
+from subfunc import token
+
 # logger設定
 LOG_DIR = logfunc.log_dir
 LOG_TXT = os.path.join(LOG_DIR, 'trainDelay.log')
@@ -14,7 +16,7 @@ ROUTE = jsonfunc.TRAIN_ROUTE
 
 # LINE設定
 LINE_URL = linefunc.URL
-ACCESS_TOKEN = linefunc.ACCESS_TOKEN
+ACCESS_TOKEN = token.ACCESS_TOKEN
 HEADERS = linefunc.HEADERS
 
 logger = logfunc.get_logger(__name__, LOG_TXT)

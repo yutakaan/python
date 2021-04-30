@@ -4,6 +4,7 @@ import sys
 from subfunc import logfunc
 from subfunc import jsonfunc
 from subfunc import linefunc
+from subfunc import token
 
 # set logger
 LOG_DIR = logfunc.log_dir
@@ -17,7 +18,7 @@ AREA_MODE = jsonfunc.AREA_MODE
 
 # set line func
 LINE_URL = linefunc.URL
-ACCESS_TOKEN = linefunc.ACCESS_TOKEN
+ACCESS_TOKEN = token.ACCESS_TOKEN
 HEADERS = linefunc.HEADERS
 
 logger.info('start weather.py')

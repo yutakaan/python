@@ -6,14 +6,14 @@ import time
 import datetime
 from subfunc import linefunc
 from subfunc import logfunc
+from subfunc import token
 
 # set Picture
 IMAGE_PATH = os.path.expanduser('~') + '/python/log/'
 SEND_FLAG=sys.argv[1]
-print(SEND_FLAG)
 # set LINE
 URL = linefunc.URL
-ACCESS_TOKEN = linefunc.ACCESS_TOKEN
+ACCESS_TOKEN = token.ACCESS_TOKEN
 HEADERS = linefunc.HEADERS
 
 # set log

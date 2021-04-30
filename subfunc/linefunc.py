@@ -1,9 +1,10 @@
 import os
 import requests
+from subfunc import token
 
 # Lineのアクセスコード
 URL = "https://notify-api.line.me/api/notify"
-ACCESS_TOKEN = ''
+ACCESS_TOKEN = token.ACCESS_TOKEN
 HEADERS = {'Authorization': 'Bearer ' + ACCESS_TOKEN}
 
 # Send Message to LINE
