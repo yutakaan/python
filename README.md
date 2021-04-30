@@ -39,11 +39,9 @@ DATE_MODE = 1
 AREA_MODE = 1
 </pre>
 
-#### linefunc.py
-Lineのアクセスコードを記載してください。[LINE Notify](https://notify-bot.line.me/ja/)の機能を使っています。
+#### token.py
+subfuncフォルダ下にファイルを作成して、Lineのアクセスコードを記載してください。[LINE Notify](https://notify-bot.line.me/ja/)の機能を使っています。
 <pre>
-# Lineのアクセスコード
-URL = "https://notify-api.line.me/api/notify"
 ACCESS_TOKEN = ''
 </pre>
 
