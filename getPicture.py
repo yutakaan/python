@@ -9,9 +9,8 @@ from subfunc import logfunc
 
 # set Picture
 IMAGE_PATH = os.path.expanduser('~') + '/python/log/'
-PUSH_START = '08'  # 写真送信開始時刻
-PUSH_STOP = '19'  # 写真送信終了時刻
-
+SEND_FLAG=sys.argv[1]
+print(SEND_FLAG)
 # set LINE
 URL = linefunc.URL
 ACCESS_TOKEN = linefunc.ACCESS_TOKEN
@@ -34,17 +33,15 @@ def getPicture(IMAGE_FILE):
     cc.release()
 
 # 指定した時間のみ写真を送る
-def sendPicture(URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, IMAGE_FILE, PUSH_START, PUSH_STOP, TIME_HH):
-    if PUSH_START <= TIME_HH and TIME_HH <= PUSH_STOP:
-        linefunc.pushPicture(URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, IMAGE_FILE)
-        logger.info('Send Picture to LINE.')
-    else:
-        logger.info('Not Send Picture to LINE')
+def sendPicture(URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, IMAGE_FILE):
+    linefunc.pushPicture(URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, IMAGE_FILE)
+    logger.info('Send Picture to LINE.')
 
 def main():
     logger.info('処理開始')
     getPicture(IMAGE_FILE)
-    sendPicture(URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, IMAGE_FILE, PUSH_START, PUSH_STOP, TIME_HH)
+    if SEND_FLAG == '1':
+        sendPicture(URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, IMAGE_FILE)
     logger.info('処理終了')
 
 if __name__=='__main__':
