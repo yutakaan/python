@@ -48,12 +48,10 @@ ACCESS_TOKEN = ''
 </pre>
 
 #### getPicture.py
-ログの出力先の設定と、写真を送る時間帯を設定してください。
+ログの出力先の設定~~と、写真を送る時間帯を設定~~してください。
 <pre>
 # set Picture
 IMAGE_PATH = os.path.expanduser('~') + '/python/log/'
-PUSH_START = '08'  # 写真送信開始時刻
-PUSH_STOP = '19'  # 写真送信終了時刻
 </pre>
 
 #### interphone.py
@@ -83,12 +81,16 @@ GSTOP = 30  # 通過域端最小損失
 ### Run
 #### getPicture.py/getTrainDelay.py/weather.py
 cronに設定しておくことで、定期的に結果をLINEに通知します。
+getPicture.shは実行時の引数に1を付与することで、LINEへ通知されます。
+LINEヘ通知したくない場合は、0を指定してください。
 <pre>
 # Weather
 10 21 * * * python3 $HOME/python/weather.py
 
 # getPicture
-0 */1 * * * $HOME/python/getPicture.sh
+0 0-7 * * * $HOME/python/getPicture.sh 0
+0 8-19 * * * $HOME/python/getPicture.sh 1
+0 20-23 * * * $HOME/python/getPicture.sh 0
 
 # getTrainDelay
 20  7 * * * python3 $HOME/python/trainDelay.py
