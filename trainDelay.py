@@ -26,7 +26,7 @@ HEADERS = linefunc.HEADERS
 logger = logfunc.get_logger(__name__, LOG_TXT)
 
 # 列車データ
-TRAIN_FILE = './data/train.tsv'
+TRAIN_FILE = os.path.expanduser('~') + '/python/data/train.tsv'
 
 def searchTargetLine(delay_data,ROUTE):
     flag = 0
