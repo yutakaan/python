@@ -27,6 +27,7 @@ log_dir = os.path.expanduser('~') + '/python/log'
 
 #### jsonfunc.py
 路線名を記載してください（例：埼京線）。[こちら](https://rti-giken.jp/fhc/api/train_tetsudo/)のサイトからデータを取得しています。
+trainDelay.py実行時に引数を指定することで、その路線名の情報を取得することができます。
 <pre>
 # 路線名を記載
 TRAIN_ROUTE = ''
