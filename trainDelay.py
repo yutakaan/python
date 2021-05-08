@@ -12,7 +12,10 @@ LOG_TXT = os.path.join(LOG_DIR, 'trainDelay.log')
 
 # API情報取得
 URL = jsonfunc.TRAIN_URL
-ROUTE = jsonfunc.TRAIN_ROUTE
+if(len(sys.argv) == 1 ):
+    ROUTE = jsonfunc.TRAIN_ROUTE
+else:
+    ROUTE = sys.argv[1]
 
 # LINE設定
 LINE_URL = linefunc.URL
