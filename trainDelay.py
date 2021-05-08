@@ -5,6 +5,7 @@ from subfunc import logfunc
 from subfunc import jsonfunc
 from subfunc import linefunc
 from subfunc import token
+from subfunc import extractdatafunc
 
 # logger設定
 LOG_DIR = logfunc.log_dir
@@ -24,6 +25,9 @@ HEADERS = linefunc.HEADERS
 
 logger = logfunc.get_logger(__name__, LOG_TXT)
 
+# 列車データ
+TRAIN_FILE = './data/train.tsv'
+
 def searchTargetLine(delay_data,ROUTE):
     flag = 0
     i = 0
@@ -42,17 +46,25 @@ def searchTargetLine(delay_data,ROUTE):
 
 def main():
 
-    # API取得処理
-    logger.debug('API実行')
-    delay_data = jsonfunc.getTrainDelay(URL)
-    logger.debug('API終了')
-    # 対象の路線を検索
-    LINE_MESSAGE = searchTargetLine(delay_data,ROUTE)
-    # LINE通知
-    logger.debug('LINE送信処理開始')
-    logger.debug(LINE_MESSAGE)
-    linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
-    logger.debug('LINE送信処理終了')
+    # 路線名称のチェック
+    cnt = extractdatafunc.extractTsvCol(TRAIN_FILE, 1).count(ROUTE)
+    if cnt ==0:
+        LINE_MESSAGE = '一致する路線名がありません。'
+        logger.error(LINE_MESSAGE)
+        logger.error('路線名：' + ROUTE)
+        linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+    else:
+        # API取得処理
+        logger.debug('API実行')
+        delay_data = jsonfunc.getTrainDelay(URL)
+        logger.debug('API終了')
+        # 対象の路線を検索
+        LINE_MESSAGE = searchTargetLine(delay_data,ROUTE)
+        # LINE通知
+        logger.debug('LINE送信処理開始')
+        logger.debug(LINE_MESSAGE)
+        linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+        logger.debug('LINE送信処理終了')
 
 if __name__ == "__main__":
     logger.info('鉄道遅延情報取得開始')
