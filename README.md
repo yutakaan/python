@@ -27,7 +27,7 @@ log_dir = os.path.expanduser('~') + '/python/log'
 
 #### jsonfunc.py
 路線名を記載してください（例：埼京線）。[こちら](https://rti-giken.jp/fhc/api/train_tetsudo/)のサイトからデータを取得しています。
-trainDelay.py実行時に引数を指定することで、その路線名の情報を取得することができます。
+trainDelay.py実行時に引数を指定することで、その路線名の情報を取得することができます。指定しない場合は、jsonfunc.pyの路線名の結果が通知されます。
 <pre>
 # 路線名を記載
 TRAIN_ROUTE = ''
@@ -76,6 +76,9 @@ FSTOP2 = np.array([750, 950]) # 阻止域端周波数
 GPASS = 6   # 通過域端最大損失
 GSTOP = 30  # 通過域端最小損失
 </pre>
+
+#### trainDelay.py
+dataフォルダを作成し、その配下に[こちら](https://rti-giken.jp/fhc/api/train_tetsudo/)のtrain.tsvを配置してください。実行前のチェックで、路線名が正しいかをチェックしています。
 
 ### Run
 #### getPicture.py/getTrainDelay.py/weather.py
