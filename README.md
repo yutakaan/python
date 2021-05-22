@@ -6,6 +6,7 @@ RaspberryPiを使ったスマートホームアプリケーションです。結
 * interphone.py: インターフォンが鳴ったらLINEに通知されます。
 * trainDelay.py: 電車の遅延情報がLINEで通知されます。
 * weather.py: ~~天気情報をLINEで通知していましたが、[livedoor天気](https://help.livedoor.com/weather/index.html)のサービス終了に伴い、利用できなくなっています。~~ 翌日の天気を取得して、LINEに通知されます（気象庁のAPIが利用できるようになったので、そちらに対応しています）。デフォルトでは埼玉県南部の設定になっています。
+* gitNews.py: Yahoo!のページから主要ニュースのタイトルを取得します。
 
 ## Requirement
 * RaspberryPi2 Model B
@@ -81,9 +82,9 @@ GSTOP = 30  # 通過域端最小損失
 dataフォルダを作成し、その配下に[こちら](https://rti-giken.jp/fhc/api/train_tetsudo/)のtrain.tsvを配置してください。実行前のチェックで、路線名が正しいかをチェックしています。
 
 ### Run
-#### getPicture.py/getTrainDelay.py/weather.py
+#### getPicture.py/getTrainDelay.py/weather.py/getNews.py
 cronに設定しておくことで、定期的に結果をLINEに通知します。
-getPicture.shは実行時の引数に1を付与することで、LINEへ通知されます。
+getPicture.sh/getNews.pyは実行時の引数に1を付与することで、LINEへ通知されます。
 LINEヘ通知したくない場合は、0を指定してください。
 <pre>
 # Weather
@@ -96,6 +97,13 @@ LINEヘ通知したくない場合は、0を指定してください。
 
 # getTrainDelay
 20  7 * * * python3 $HOME/python/trainDelay.py
+
+# getNews
+30 0-7 * * * python3 $HOME/python/getNews.py 0
+30 8,14,20 * * * python3 $HOME/python/getNews.py 1
+30 9-13 * * * python3 $HOME/python/getNews.py 0
+30 15-19 * * * python3 $HOME/python/getNews.py 0
+30 21-23 * * * python3 $HOME/python/getNews.py 0
 </pre>
 
 #### interphone.py
