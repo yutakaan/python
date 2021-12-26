@@ -7,6 +7,7 @@ RaspberryPiを使ったスマートホームアプリケーションです。結
 * trainDelay.py: 電車の遅延情報がLINEで通知されます。
 * weather.py: ~~天気情報をLINEで通知していましたが、[livedoor天気](https://help.livedoor.com/weather/index.html)のサービス終了に伴い、利用できなくなっています。~~ 翌日の天気を取得して、LINEに通知されます（気象庁のAPIが利用できるようになったので、そちらに対応しています）。デフォルトでは埼玉県南部の設定になっています。
 * gitNews.py: Yahoo!のページから主要ニュースのタイトルを取得します。
+* homeBridge.py: HomeBridgeを経由して登録した操作を実行します。
 
 ## Requirement
 * RaspberryPi2 Model B
@@ -128,7 +129,14 @@ sudo systemctl start interphone.service
 sudo systemctl enable interphone.service
 </pre>
 
+### homeBridge.py
+~/.homebridge/config.jsonに記載されているデータを抽出、curlコマンドを実行することで操作を行います。
+本来はAppleのHomeKitアプリ経由で実行していましたが、外出先から実行できない場合があるので、curlを直接実行するようにしています。
+slackと連携すると便利です。
+
 ## Reference
 * [ラズベリーパイでインターホンの音を検知する](https://westgate-lab.hatenablog.com/entry/2019/12/25/225422)
 * [鉄道遅延情報のjson](https://rti-giken.jp/fhc/api/train_tetsudo/)
 * [ラズパイでpython3にopencvを入れたらエラーが出た【対処法】](https://qiita.com/XM03/items/48463fd910470b226f22)
+* [HomeKitとRaspberry PiとIRKitで部屋の家電をSiriから音声操作する方法](https://techblog.nhn-techorus.com/archives/725)
+* [Hubotを使ってSlackに投稿されたメッセージに応答してシェルスクリプトを実行させる](https://www.virment.com/hubot-slack-execute-shell-script/)
