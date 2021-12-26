@@ -82,6 +82,11 @@ GSTOP = 30  # 通過域端最小損失
 #### trainDelay.py
 dataフォルダを作成し、その配下に[こちら](https://rti-giken.jp/fhc/api/train_tetsudo/)のtrain.tsvを配置してください。実行前のチェックで、路線名が正しいかをチェックしています。
 
+#### homeBridge.py
+~/.homebridge/config.jsonに記載されているデータを抽出、curlコマンドを実行することで操作を行います。
+本来はAppleのHomeKitアプリ経由で実行していましたが、外出先から実行できない場合があるので、curlを直接実行するようにしています。
+slackと連携すると便利です。
+
 ### Run
 #### getPicture.py/getTrainDelay.py/weather.py/getNews.py
 cronに設定しておくことで、定期的に結果をLINEに通知します。
@@ -128,11 +133,6 @@ WantedBy=multi-user.target
 sudo systemctl start interphone.service
 sudo systemctl enable interphone.service
 </pre>
-
-### homeBridge.py
-~/.homebridge/config.jsonに記載されているデータを抽出、curlコマンドを実行することで操作を行います。
-本来はAppleのHomeKitアプリ経由で実行していましたが、外出先から実行できない場合があるので、curlを直接実行するようにしています。
-slackと連携すると便利です。
 
 ## Reference
 * [ラズベリーパイでインターホンの音を検知する](https://westgate-lab.hatenablog.com/entry/2019/12/25/225422)
