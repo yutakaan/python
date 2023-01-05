@@ -2,3 +2,4 @@ subfunc/token.py
 subfunc/__pycache__
 log
 data/train.tsv
+subfunc/env.py
