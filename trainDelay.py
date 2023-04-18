@@ -27,6 +27,7 @@ logger = logfunc.get_logger(__name__, LOG_TXT)
 
 # 列車データ
 TRAIN_FILE = os.path.expanduser('~') + '/python/data/train.tsv'
+DIVTYPE = '\t'
 
 def searchTargetLine(delay_data,ROUTE):
     flag = 0
@@ -47,7 +48,7 @@ def searchTargetLine(delay_data,ROUTE):
 def main():
 
     # 路線名称のチェック
-    cnt = extractdatafunc.extractTsvCol(TRAIN_FILE, 1).count(ROUTE)
+    cnt = extractdatafunc.extractFileCol(TRAIN_FILE, 1, DIVTYPE).count(ROUTE)
     if cnt ==0:
         LINE_MESSAGE = '一致する路線名がありません。'
         logger.error(LINE_MESSAGE)
