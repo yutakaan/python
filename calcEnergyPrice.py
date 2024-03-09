@@ -85,7 +85,7 @@ def calcDailyPrice(TARGET_DATE):
 
 def main():
     logger.info('処理開始')
-    TARGET_DATE = (datetime.today()-timedelta(1)).strftime("%Y/%m/%d")
+    TARGET_DATE = (datetime.today()-timedelta(1)).strftime("%Y%m%d")
     logger.debug('使用量計算処理開始')
     contents = calcDailyPrice(TARGET_DATE)
     logger.debug('使用量計算処理終了')

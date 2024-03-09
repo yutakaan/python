@@ -24,8 +24,8 @@ ENERGY_TIME_VALUE_URL='http://OMRON/asyncquery.cgi?type=Consume&subType=2&timeTy
 
 def getEnergyTimeValue(url, target_date):
     target_yyyy = target_date[0:4]
-    target_mm = target_date[5:7]
-    target_dd = target_date[8:10]
+    target_mm = target_date[4:6]
+    target_dd = target_date[6:8]
     target_url = url + '&year=' + target_yyyy + '&month=' + target_mm + '&day=' + target_dd
     response = requests.get(target_url).json()
     totalA = round(int(response['totalConsumptionA'])*0.1, 3)
@@ -35,11 +35,12 @@ def getEnergyTimeValue(url, target_date):
     return totalA, totalB, totalC, totalD
 
 GENERATOR_VALUE_URL = 'http://OMRON/asyncquery.cgi?type=Record&timeType=1'
+MONTHLY_VALUE_URL = 'http://OMRON/asyncquery.cgi?type=Record&timeType=2'
 
 def getResultEnergyValue(url, target_date):
     target_yyyy = target_date[0:4]
-    target_mm = target_date[5:7]
-    target_dd = target_date[8:10]
+    target_mm = target_date[4:6]
+    target_dd = target_date[6:8]
     target_url = url + '&year=' + target_yyyy + '&month=' + target_mm + '&day=' + target_dd
     response = requests.get(target_url).json()
     totalGeneration = round(int(response['totalGeneration'])*0.1, 3)
