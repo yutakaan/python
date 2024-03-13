@@ -30,6 +30,7 @@ HEADER_MESSAGE = datetime.today().strftime("%Y/%m/%d %H:%M:%S") + ' 取得' + '\
 # set date data
 t_date = datetime.today()-timedelta(1)
 TARGET_DATE = t_date.strftime("%Y%m%d")
+NOW_DAYS_IN_MONTH = int(TARGET_DATE[6:8])
 # set past date data
 p_date = datetime.today()-dateutil.relativedelta.relativedelta(years=1)
 PAST_TARGET_DATE = p_date.strftime("%Y%m%d")
@@ -50,12 +51,13 @@ def getValue(URL, TARGET_DATE):
 
 def main():
     logger.info('処理開始')
-    logger.debug('前日発電消費量取得開始')
-    nowDailyResult = list(getValue(GENERATOR_VALUE_URL, TARGET_DATE))
-    logger.debug('前日発電消費量取得終了')
     logger.debug('前日までの累積発電消費量取得開始')
     nowMonResult = list(getValue(MONTHLY_VALUE_URL, TARGET_DATE))
     logger.debug('前日までの累積発電消費量取得処理終了')
+    logger.debug('前日までの平均発電消費量取得開始')
+    nowDailyResult = []
+    nowDailyResult = [round(nowMonResult[i]/NOW_DAYS_IN_MONTH, 1) for i in range(0, len(nowMonResult))]
+    logger.debug('前日までの平均発電消費量取得終了')
     logger.debug('1年前発電消費量取得開始')
     pastMonResult = list(getValue(MONTHLY_VALUE_URL, PAST_TARGET_DATE))
     logger.debug('1年前発電消費量取得終了')
@@ -77,7 +79,7 @@ def main():
     LINE_MESSAGE = HEADER_MESSAGE + '\n' \
                    + str(table) + '\n' \
                    + '\n' \
-                   + '1：前日の実績' + '\n' \
+                   + '1：前日までの1日平均' + '\n' \
                    + '2：前年同月の1日平均' + '\n' \
                    + '3：前日までの累積' + '\n' \
                    + '4：前年同月1ヶ月の累積'
