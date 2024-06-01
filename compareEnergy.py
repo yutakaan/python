@@ -32,7 +32,7 @@ t_date = datetime.today()-timedelta(1)
 TARGET_DATE = t_date.strftime("%Y%m%d")
 NOW_DAYS_IN_MONTH = int(TARGET_DATE[6:8])
 # set past date data
-p_date = datetime.today()-dateutil.relativedelta.relativedelta(years=1)
+p_date = t_date-dateutil.relativedelta.relativedelta(years=1)
 PAST_TARGET_DATE = p_date.strftime("%Y%m%d")
 PAST_DAYS_IN_MONTH = calendar.monthrange(p_date.year, p_date.month)[1]
 # set URL
