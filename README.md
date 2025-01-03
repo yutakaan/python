@@ -6,6 +6,8 @@ RaspberryPiを使ったスマートホームアプリケーション群です。
 * Python3.7.3
 * WebCamera（Logicool C270n HD 720P で動作確認済み）
 * 太陽光HEMSモニタ（オムロン製：KP-MU1P-SET）
+* SwitchBot 温湿度計
+* SwitchBot CO2センサー（温湿度計）
 ## インストール方法
 <pre>
 git clone https://github.com/yutakaan/python.git
@@ -144,7 +146,7 @@ python3 $HOME/python/homebridge.py
 </pre>
 ### thermometer.py
 #### 概要
-* SwitchBotの温度、湿度、バッテリー残量を取得します。
+* SwitchBot温湿度計で取得した温度、湿度、バッテリー残量を取得します。
 #### 実行方法
 * env.pyにSwitchBotのMACアドレスを記載してください。
 * 引数が1ならLINEに通知します。それ以外は通知しません。
@@ -154,6 +156,19 @@ THERMOMETER_MAC=''
 <pre>
 $HOME/python/thermometer.py 0 # LINEに通知しない
 $HOME/python/thermometer.py 1 # LINEに通知する
+</pre>
+### thermoCO2meter.py
+#### 概要
+* SwitchBot CO2センサーで取得した温度、湿度、二酸化炭素濃度、バッテリー残量を取得します。
+#### 実行方法
+* env.pyにSwitchBotのMACアドレスを記載してください。
+* 引数が1ならLINEに通知します。それ以外は通知しません。
+<pre>
+THERMO_CO2_MAC=''
+</pre>
+<pre>
+$HOME/python/thermoCO2meter.py 0 # LINEに通知しない
+$HOME/python/thermoCO2meter.py 1 # LINEに通知する
 </pre>
 ### calcEnergyPrice.py
 #### 概要
@@ -179,3 +194,4 @@ ACCESS_TOKEN = ''
 * [HomeKitとRaspberry PiとIRKitで部屋の家電をSiriから音声操作する方法](https://techblog.nhn-techorus.com/archives/725)
 * [Hubotを使ってSlackに投稿されたメッセージに応答してシェルスクリプトを実行させる](https://www.virment.com/hubot-slack-execute-shell-script/)
 * [RaspberryPiで室温の計測（SwitchBot 温湿度計）](https://www.note65536.com/2020/08/raspberrypiswitchbot.html)
+* [スイッチボットCO2センサーの遊び方](https://tsuzureya.net/switchbot-co2-meter-hacks/)
