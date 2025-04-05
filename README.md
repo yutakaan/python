@@ -1,6 +1,7 @@
 # python
 ## 概要
-RaspberryPiを使ったスマートホームアプリケーション群です。結果をLINEで通知させることができます。
+RaspberryPiを使ったスマートホームアプリケーション群です。~結果をLINEで通知させることができます。~
+LINE Notifyの廃止に伴い、通知先をSlackに見直しています。
 ## スペック
 * RaspberryPi2 Model B
 * Python3.7.3
@@ -23,14 +24,14 @@ git clone https://github.com/yutakaan/python.git
 IMAGE_PATH = os.path.expanduser('~') + '/python/log/'
 </pre>
 #### 実行方法
-* 引数によってLINEに通知するかしないかを選択できます。
+* 引数によってSlackに通知するかしないかを選択できます。
 <pre>
-$HOME/python/getPicture.sh 0 # LINEに通知しない
-$HOME/python/getPicture.sh 1 # LINEに通知する
+$HOME/python/getPicture.sh 0 # Slackに通知しない
+$HOME/python/getPicture.sh 1 # Slack通知する
 </pre>
 ### interphone.py
 #### 概要
-* インターフォンが鳴ったらLINEに通知されます。
+* インターフォンが鳴ったらSlackに通知されます。
 * 高い音、低い音がそれぞれ1回ずつ鳴ったときに通知されます。各家庭のインターフォンの音の周波数や音の大きさに合わせて設定してください。
 <pre>
 FREQ_HIGH_BASE = 844.16  # high tone frequency
@@ -75,7 +76,7 @@ sudo systemctl enable interphone.service
 </pre>
 ### trainDelay.py
 #### 概要
-* 電車の遅延情報がLINEで通知されます。
+* 電車の遅延情報がSlackに通知されます。
 * dataフォルダを作成し、その配下に[こちら](https://rti-giken.jp/fhc/api/train_tetsudo/)のtrain.tsvを配置してください。実行前のチェックで、路線名が正しいかをチェックしています。
 #### 実行方法
 * jsonfunc.pyに以下を定義し、ファイルを実行してください。
@@ -88,7 +89,7 @@ python3 $HOME/python/trainDelay.py
 ### weather.py
 #### 概要
 * ~~天気情報をLINEで通知していましたが、[livedoor天気](https://help.livedoor.com/weather/index.html)のサービス終了に伴い、利用できなくなっています。~~ 
-* 翌日の天気を取得して、LINEに通知されます（気象庁のAPIが利用できるようになったので、そちらに対応しています）。デフォルトでは埼玉県南部の設定になっています。
+* 翌日の天気を取得して、Slackに通知されます（気象庁のAPIが利用できるようになったので、そちらに対応しています）。デフォルトでは埼玉県南部の設定になっています。
 #### 実行方法
 * jsonfunc.py内のXXに各自の都道府県コードを入力してください。また、AREA_MODEについては対象地域に合わせて、適宜修正してください。DATE_MODE=1は翌日を意味しています。
 <pre>
@@ -103,18 +104,18 @@ python3 $HOME/python/weather.py
 #### 概要
 * Yahoo!のページから主要ニュースのタイトルを取得します。
 #### 実行方法
-* 引数が1ならLINEに通知します。それ以外は通知しません。
+* 引数が1ならSlackに通知します。それ以外は通知しません。
 <pre>
-python3 $HOME/python/getNews.py 1 # LINEに通知する
+python3 $HOME/python/getNews.py 1 # Slackに通知する
 </pre>
 ### thermometer.py
 #### 概要
 * SwitchBotの温度計から温度、湿度、バッテリー情報を取得します。
 #### 実行方法
-* 引数が1ならLINEに通知します。それ以外は通知しません。
+* 引数が1ならSlackに通知します。それ以外は通知しません。
 <pre>
-python3 $HOME/python/thermometer.py 0 # LINEに通知しない
-python3 $HOME/python/thermometer.py 1 # LINEに通知する
+python3 $HOME/python/thermometer.py 0 # Slackに通知しない
+python3 $HOME/python/thermometer.py 1 # Slackに通知する
 </pre>
 ### homeBridge.py
 #### 概要
@@ -149,26 +150,26 @@ python3 $HOME/python/homebridge.py
 * SwitchBot温湿度計で取得した温度、湿度、バッテリー残量を取得します。
 #### 実行方法
 * env.pyにSwitchBotのMACアドレスを記載してください。
-* 引数が1ならLINEに通知します。それ以外は通知しません。
+* 引数が1ならSlackに通知します。それ以外は通知しません。
 <pre>
 THERMOMETER_MAC=''
 </pre>
 <pre>
-$HOME/python/thermometer.py 0 # LINEに通知しない
-$HOME/python/thermometer.py 1 # LINEに通知する
+$HOME/python/thermometer.py 0 # Slackに通知しない
+$HOME/python/thermometer.py 1 # Slackに通知する
 </pre>
 ### thermoCO2meter.py
 #### 概要
 * SwitchBot CO2センサーで取得した温度、湿度、二酸化炭素濃度、バッテリー残量を取得します。
 #### 実行方法
 * env.pyにSwitchBotのMACアドレスを記載してください。
-* 引数が1ならLINEに通知します。それ以外は通知しません。
+* 引数が1ならSlackに通知します。それ以外は通知しません。
 <pre>
 THERMO_CO2_MAC=''
 </pre>
 <pre>
-$HOME/python/thermoCO2meter.py 0 # LINEに通知しない
-$HOME/python/thermoCO2meter.py 1 # LINEに通知する
+$HOME/python/thermoCO2meter.py 0 # Slackに通知しない
+$HOME/python/thermoCO2meter.py 1 # Slackに通知する
 </pre>
 ### calcEnergyPrice.py
 #### 概要
@@ -183,9 +184,11 @@ python3 $HOME/python/calcEnergyPrice.py
 log_dir = os.path.expanduser('~') + '/python/log'
 </pre>
 #### token.py
-subfuncフォルダ下にファイルを作成して、Lineのアクセスコードを記載してください。[LINE Notify](https://notify-bot.line.me/ja/)の機能を使っています。
+subfuncフォルダ下にファイルを作成して、 ~Lineのアクセスコードを記載してください。[LINE Notify](https://notify-bot.line.me/ja/)の機能を使っています。~ Slackのincoming webhookのURL、APIトークン、チャネルIDを記載してください。
 <pre>
-ACCESS_TOKEN = ''
+SLACK_WEBHOOK_URL = 'https://hooks.slack.com/services/XXXXX'
+SLACK_TOKEN = 'xoxb-XXXXXX'
+SLACK_CHANNEL = 'XXXXX'
 </pre>
 ## 参考文献
 * [ラズベリーパイでインターホンの音を検知する](https://westgate-lab.hatenablog.com/entry/2019/12/25/225422)
@@ -195,3 +198,6 @@ ACCESS_TOKEN = ''
 * [Hubotを使ってSlackに投稿されたメッセージに応答してシェルスクリプトを実行させる](https://www.virment.com/hubot-slack-execute-shell-script/)
 * [RaspberryPiで室温の計測（SwitchBot 温湿度計）](https://www.note65536.com/2020/08/raspberrypiswitchbot.html)
 * [スイッチボットCO2センサーの遊び方](https://tsuzureya.net/switchbot-co2-meter-hacks/)
+* [初心者でも簡単にできる！PythonでSlack Botを作成する手順](https://paiza.hatenablog.com/entry/2024/08/23/090000)
+* [ラズベリーパイからSlackへテキスト投稿・画像投稿](https://raspi-school.com/slack/)
+* [pythonを使ってslackのメッセージの送受信や画像の送信をする方法](https://qiita.com/nyakiri_0726/items/df40eb7b8e12335fc219)
