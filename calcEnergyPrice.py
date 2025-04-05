@@ -8,8 +8,7 @@ import re
 from datetime import datetime, date, timedelta
 import os
 import sys
-from subfunc import linefunc
-from subfunc import token
+from subfunc import slackfunc
 from subfunc import logfunc
 from subfunc import jsonfunc
 from subfunc import extractdatafunc
@@ -19,11 +18,11 @@ LOG_DIR = logfunc.log_dir
 LOG_TXT = os.path.join(LOG_DIR, 'calcEnergyPrice.log')
 logger = logfunc.get_logger(__name__, LOG_TXT)
 # set line func
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
+WEBHOOK_URL = slackfunc.WEBHOOK_URL
+HEADERS = slackfunc.HEADERS
 HEADER_MESSAGE = datetime.today().strftime("%Y/%m/%d %H:%M:%S") + ' 取得' + '\n'
 TIME_HH = datetime.today().strftime("%H")
+TITLE = 'Calculation Daily Energy Price.'
 
 ENERGY_PRICE_FILE=os.path.expanduser('~') + '/python/data/energyPrice.csv'
 TARGET_DATE = (datetime.today()-timedelta(1)).strftime("%Y%m%d")
@@ -84,16 +83,15 @@ def calcDailyPrice(TARGET_DATE):
     return contents
 
 def main():
-    logger.info('処理開始')
+    logger.info('start calcEnergyPrice.py')
     TARGET_DATE = (datetime.today()-timedelta(1)).strftime("%Y%m%d")
-    logger.debug('使用量計算処理開始')
     contents = calcDailyPrice(TARGET_DATE)
-    logger.debug('使用量計算処理終了')
     LINE_MESSAGE = HEADER_MESSAGE \
                    + TARGET_DATE + 'の電気使用量実績' + '\n' \
                    + contents
-    linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
-    logger.info('処理終了')
+    #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+    slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, LINE_MESSAGE)
+    logger.info('end calcEnergyPrice.py')
 
 if __name__=='__main__':
     main()

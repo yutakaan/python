@@ -3,8 +3,7 @@ import os
 import sys
 from subfunc import logfunc
 from subfunc import jsonfunc
-from subfunc import linefunc
-from subfunc import token
+from subfunc import slackfunc
 
 # set logger
 LOG_DIR = logfunc.log_dir
@@ -16,12 +15,10 @@ URL = jsonfunc.WEATHER_URL
 DATE_MODE = jsonfunc.DATE_MODE
 AREA_MODE = jsonfunc.AREA_MODE
 
-# set line func
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
-
-logger.info('start weather.py')
+# set slack func
+WEBHOOK_URL = slackfunc.WEBHOOK_URL
+HEADERS = slackfunc.HEADERS
+TITLE = 'Weather News.'
 
 # get weather data
 def getWeatherData():
@@ -70,7 +67,8 @@ def getWeatherData():
 def main():
     logger.info('start weather.py')
     LINE_MESSAGE = getWeatherData()
-    linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+    #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+    slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, LINE_MESSAGE)
     logger.info('end weather.py')
 
 if __name__=='__main__':

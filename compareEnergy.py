@@ -12,8 +12,7 @@ import sys
 import calendar
 import numpy as np
 from beautifultable import BeautifulTable
-from subfunc import linefunc
-from subfunc import token
+from subfunc import slackfunc
 from subfunc import logfunc
 from subfunc import jsonfunc
 from subfunc import extractdatafunc
@@ -22,11 +21,11 @@ from subfunc import extractdatafunc
 LOG_DIR = logfunc.log_dir
 LOG_TXT = os.path.join(LOG_DIR, 'compareEnergy.log')
 logger = logfunc.get_logger(__name__, LOG_TXT)
-# set line func
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
+# set slack func
+WEBHOOK_URL = slackfunc.WEBHOOK_URL
+HEADERS = slackfunc.HEADERS
 HEADER_MESSAGE = datetime.today().strftime("%Y/%m/%d %H:%M:%S") + ' 取得' + '\n'
+TITLE = 'Compare Energy Value.'
 # set date data
 t_date = datetime.today()-timedelta(1)
 TARGET_DATE = t_date.strftime("%Y%m%d")
@@ -50,25 +49,25 @@ def getValue(URL, TARGET_DATE):
     return result
 
 def main():
-    logger.info('処理開始')
-    logger.debug('前日までの累積発電消費量取得開始')
+    logger.info('start compareEnergy.py')
+    #logger.debug('前日までの累積発電消費量取得開始')
     nowMonResult = list(getValue(MONTHLY_VALUE_URL, TARGET_DATE))
-    logger.debug('前日までの累積発電消費量取得処理終了')
-    logger.debug('前日までの平均発電消費量取得開始')
+    #logger.debug('前日までの累積発電消費量取得処理終了')
+    #logger.debug('前日までの平均発電消費量取得開始')
     nowDailyResult = []
     nowDailyResult = [round(nowMonResult[i]/NOW_DAYS_IN_MONTH, 1) for i in range(0, len(nowMonResult))]
-    logger.debug('前日までの平均発電消費量取得終了')
-    logger.debug('1年前発電消費量取得開始')
+    #logger.debug('前日までの平均発電消費量取得終了')
+    #logger.debug('1年前発電消費量取得開始')
     pastMonResult = list(getValue(MONTHLY_VALUE_URL, PAST_TARGET_DATE))
-    logger.debug('1年前発電消費量取得終了')
-    logger.debug('同月1年前の平均発電消費量取得開始')
+    #logger.debug('1年前発電消費量取得終了')
+    #logger.debug('同月1年前の平均発電消費量取得開始')
     pastDailyResult = []
     pastDailyResult = [round(pastMonResult[i]/PAST_DAYS_IN_MONTH, 1) for i in range(0, len(pastMonResult))]
-    logger.debug('totalGeneration = ' + str(pastDailyResult[0]) \
-                + ' totalConsumption = ' + str(pastDailyResult[1]) \
-                + 'totalSelling = ' + str(pastDailyResult[2]) \
-                + 'totalBuying = ' + str(pastDailyResult[3]))
-    logger.debug('同月1年前の平均発電消費量取得終了')
+    #logger.debug('totalGeneration = ' + str(pastDailyResult[0]) \
+    #            + ' totalConsumption = ' + str(pastDailyResult[1]) \
+    #            + 'totalSelling = ' + str(pastDailyResult[2]) \
+    #            + 'totalBuying = ' + str(pastDailyResult[3]))
+    #logger.debug('同月1年前の平均発電消費量取得終了')
     title_list = ["GEN", "USE", "SEL", "BUY"]
     data = np.array([nowDailyResult, pastDailyResult, nowMonResult, pastMonResult])
     table = BeautifulTable()
@@ -83,8 +82,9 @@ def main():
                    + '2：前年同月の1日平均' + '\n' \
                    + '3：前日までの累積' + '\n' \
                    + '4：前年同月1ヶ月の累積'
-    linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
-    logger.info('処理終了')
+    #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+    slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, LINE_MESSAGE)
+    logger.info('end compareEnergy.py')
 
 if __name__=='__main__':
     main()

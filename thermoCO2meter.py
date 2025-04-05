@@ -1,20 +1,19 @@
 from bluepy import btle
 from subfunc.switchbot import SwitchbotScanDelegate
 from subfunc import env
-from subfunc import linefunc
+from subfunc import slackfunc
 from subfunc import logfunc
-from subfunc import token
 import datetime
 import os
 import sys
 
 # set LINE
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
+WEBHOOK_URL = slackfunc.WEBHOOK_URL
+HEADERS = slackfunc.HEADERS
 SEND_FLAG = sys.argv[1]
 LINE_MESSAGE = datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S") + ' 取得'
 TIME_HH = datetime.datetime.now().strftime("%H")
+TITLE = 'Measure CO2 & Temperature.'
 
 # set log
 LOG_DIR = logfunc.log_dir
@@ -26,11 +25,12 @@ MACADDRESS = str.lower(env.THERMO_CO2_MAC)
 
 ######SwitchBotの値取得######
 def main():    
-    logger.info('Start ThermoCO2Meter')
+    logger.info('start thermoCO2Meter.py')
     contents = getThermometer(MACADDRESS)
     if SEND_FLAG == '1':
-        linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, contents)
-    logger.info('Stop ThermoCO2Meter')
+        #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, contents)
+        slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, contents)
+    logger.info('end thermoCO2Meter.py')
 
 def getThermometer(macaddress):
     #switchbot.pyのセンサ値取得デリゲートを、スキャン時実行に設定

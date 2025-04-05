@@ -8,14 +8,13 @@ import re
 import datetime
 import os
 import sys
-from subfunc import linefunc
-from subfunc import token
+from subfunc import slackfunc
 from subfunc import logfunc
 
 # set LINE
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
+WEBHOOK_URL = slackfunc.WEBHOOK_URL
+HEADERS = slackfunc.HEADERS
+TITLE = 'Daily News.'
 
 # set log
 LOG_DIR = logfunc.log_dir
@@ -45,11 +44,12 @@ def getNews():
     return titles
 
 def main():
-    logger.info('処理開始')
+    logger.info('start getNews.py')
     contents = getNews()
     if SEND_FLAG == '1':
-        linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, contents)
-    logger.info('処理終了')
+        #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, contents)
+        slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, contents)
+    logger.info('end getNews.py')
 
 if __name__=='__main__':
     main()

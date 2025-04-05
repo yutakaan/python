@@ -15,8 +15,7 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 from beautifultable import BeautifulTable
-from subfunc import linefunc
-from subfunc import token
+from subfunc import slackfunc
 from subfunc import logfunc
 from subfunc import jsonfunc
 from subfunc import extractdatafunc
@@ -27,10 +26,10 @@ LOG_DIR = logfunc.log_dir
 LOG_TXT = os.path.join(LOG_DIR, 'getPredSolarRadiation.log')
 logger = logfunc.get_logger(__name__, LOG_TXT)
 # set line func
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
 HEADER_MESSAGE = datetime.today().strftime("%Y/%m/%d %H:%M:%S") + ' 取得' + '\n'
+TITLE = 'Get Prediction Solar Radiation.'
+TOKEN = slackfunc.TOKEN
+CHANNEL = slackfunc.CHANNEL
 # set file info
 FILE_PATH = os.path.expanduser('~') + '/python/data/'
 FILE_NAME = datetime.today().strftime("%Y%m%d") + '_ndata.csv'
@@ -53,8 +52,8 @@ ALL_PANEL_AREA = PANEL_CAPACITY / MAX_OUTPUT * ONE_PANEL_AREA # パネル全体�
 CONV_EFFECIENCY = 0.206 # 変換効率
 
 def main():
-    logger.info('処理開始')
-    logger.debug('Start Get Solar Radiation')
+    logger.info('start getPredSolarRadiation.py')
+    #logger.debug('Start Get Solar Radiation')
     # 緯度・経度から予測日射量を取得
     result_list = extractdatafunc.extractFile2KeyRowList(FILE_FULLPATH, LATITUDE, 0, LONGITUDE, 1, ',')
     # 方位角・傾斜角係数取得
@@ -77,39 +76,41 @@ def main():
     index = df_result['predSolarRadiation'].idxmax()
     peak_time = str(df_result['time'][index])
     peak_value = str(round(df_result['predSolarRadiation'][index], 3))
-    logger.debug('peak_time = ' + peak_time + ', peak_value = ' + peak_value)
+    #logger.debug('peak_time = ' + peak_time + ', peak_value = ' + peak_value)
     gen_index = df_result['predGenerationValue'].idxmax()
     gen_peak_time = str(df_result['time'][gen_index])
     gen_peak_value = str(round(df_result['predGenerationValue'][gen_index], 3))
-    logger.debug('peak_time = ' + gen_peak_time + ', peak_value = ' + gen_peak_value)
-    logger.debug('End Get Solar Radiation')
+    #logger.debug('peak_time = ' + gen_peak_time + ', peak_value = ' + gen_peak_value)
+    #logger.debug('End Get Solar Radiation')
     # 予測日射量のデータ整理
     # グラフをファイルに落とす
-    logger.debug('Start Create Pred Image')
+    #logger.debug('Start Create Pred Image')
     df_result.plot(x='time', y=['horizontalvalue', 'predSolarRadiation'])
     plt.xlabel("time")
     plt.ylabel("Solar Radiation [kWh/m2]")
     plt.savefig(FILE_PATH + IMAGE_FILE)
-    logger.debug('End Create Pred Image')
+    #logger.debug('End Create Pred Image')
     # Lineに画像を送信
     LINE_MESSAGE = HEADER_MESSAGE + '\n' \
                     + '明日の予測日射量は以下です。' + '\n' \
                     + '・最大日射量：' + peak_value + '[kWh/m2]' + '\n' \
                     + '・時刻：' + peak_time
-    linefunc.pushPicture(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, FILE_PATH + IMAGE_FILE)
+    #linefunc.pushPicture(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, FILE_PATH + IMAGE_FILE)
+    slackfunc.postSlackTextWithPicture(TOKEN, CHANNEL, TITLE, LINE_MESSAGE, FILE_PATH + IMAGE_FILE)
     # グラフをファイルに落とす
-    logger.debug('Start Creat Generation Image')
+    #logger.debug('Start Creat Generation Image')
     df_result.plot.bar(x='time', y='predGenerationValue', width=1)
     plt.xlabel("time")
     plt.ylabel("Pred Generation Value [kWh]")
     plt.savefig(FILE_PATH + GEN_IMAGE_FILE)
-    logger.debug('End Create Generation Image')
+    #logger.debug('End Create Generation Image')
     # Lineに画像を送信
     LINE_MESSAGE = '明日の予測発電量は以下です。' + '\n' \
                      + '・最大発電量：' + gen_peak_value + '[kWh]' + '\n' \
                      + '・時刻：' + gen_peak_time
-    linefunc.pushPicture(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, FILE_PATH + GEN_IMAGE_FILE)
-    logger.info('処理終了')
+    #linefunc.pushPicture(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE, FILE_PATH + GEN_IMAGE_FILE)
+    slackfunc.postSlackTextWithPicture(TOKEN, CHANNEL, TITLE, LINE_MESSAGE, FILE_PATH + GEN_IMAGE_FILE)
+    logger.info('end getPredSolarRadiation.py')
 
 if __name__=='__main__':
     main()

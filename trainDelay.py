@@ -3,8 +3,7 @@ import os
 import sys
 from subfunc import logfunc
 from subfunc import jsonfunc
-from subfunc import linefunc
-from subfunc import token
+from subfunc import slackfunc
 from subfunc import extractdatafunc
 
 # logger設定
@@ -19,9 +18,9 @@ else:
     ROUTE = sys.argv[1]
 
 # LINE設定
-LINE_URL = linefunc.URL
-ACCESS_TOKEN = token.ACCESS_TOKEN
-HEADERS = linefunc.HEADERS
+WEBHOOK_URL = slackfunc.WEBHOOK_URL
+HEADERS = slackfunc.HEADERS
+TITLE = 'Train Delay.'
 
 logger = logfunc.get_logger(__name__, LOG_TXT)
 
@@ -53,21 +52,19 @@ def main():
         LINE_MESSAGE = '一致する路線名がありません。'
         logger.error(LINE_MESSAGE)
         logger.error('路線名：' + ROUTE)
-        linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+        #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+        slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, LINE_MESSAGE)
     else:
         # API取得処理
-        logger.debug('API実行')
         delay_data = jsonfunc.getTrainDelay(URL)
-        logger.debug('API終了')
         # 対象の路線を検索
         LINE_MESSAGE = searchTargetLine(delay_data,ROUTE)
         # LINE通知
-        logger.debug('LINE送信処理開始')
         logger.debug(LINE_MESSAGE)
-        linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
-        logger.debug('LINE送信処理終了')
+        #linefunc.pushLine(LINE_URL, ACCESS_TOKEN, HEADERS, LINE_MESSAGE)
+        slackfunc.postSlackText(WEBHOOK_URL, HEADERS, TITLE, LINE_MESSAGE)
 
 if __name__ == "__main__":
-    logger.info('鉄道遅延情報取得開始')
+    logger.info('start trainDelay.py')
     main()
-    logger.info('鉄道遅延情報取得取得終了')
+    logger.info('end trainDelay.py')
